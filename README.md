@@ -10,11 +10,13 @@ May also capture the whois output in a text file, using the param --capture
 
 ## Usage samples:
 
+```
   whoavail domain1.com domain2.net
   whoavail abcdfg.{com,net,org}
   whoavail {abcd,efgh,jklm}.{com,net,org} >> filename.csv
   whoavail {a..z}domain{0..9}.{com,net,org} | tee -a filename.csv
   whoavail domain{a..z}.{com,net,org} | tee -a filename.csv
+```
 
 ## Thanks to
 
