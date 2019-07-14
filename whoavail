@@ -1,0 +1,44 @@
+#!/bin/bash
+
+if [ "$#" == "0" ]; then 
+  echo "Usage: whoavail domain1.com domain2.net
+       whoavail abcdfg.{com,net,org}
+       whoavail domain{1,2,3}.com
+       whoavail {abcd,efgh,jklm}.{com,net,org}
+       whoavail {a..z}domain.{com,net,org} | tee -a domainavail.lst
+       whoavail {a..z}{a..z}{a..z}.{com,net,org} | tee -a domainavail.lst"
+  exit 1
+fi 
+
+#coloured text
+#green='\033[0;32m'
+#red='\033[0;31m'
+#reset='\033[0m'
+
+#plain text
+green=''
+red=''
+reset=''
+
+while (( "$#" )); do 
+
+  sleep 0.2
+  
+  time=$(date +%y%m%d-%H%M%S)
+  domainname=$1
+  filename=$time"_"$domainname".whois_out"
+  
+  whoisresult=$(whois $domainname > $filename)
+    
+  results=$(egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri' $filename)
+  returncode=$?
+  
+  if [ $returncode -eq 0 ]; then
+    echo -e "${time}\t${green}Available${reset}\t${1}"
+  else
+    echo -e "${time}\t${red}NOT Available${reset}\t${1}"
+  fi
+
+  shift 
+ 
+done
