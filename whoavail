@@ -20,25 +20,30 @@ green=''
 red=''
 reset=''
 
-while (( "$#" )); do 
+# if the first param is a file read the domainlist form that file otherwise process all the params
+if test -f "$1"; then
+  domainlist=$(cat $1)
+else
+  domainlist="$@"
+fi
 
-  sleep 0.2
-  
+for domainname in $domainlist
+do
+
   time=$(date +%y%m%d-%H%M%S)
-  domainname=$1
-  filename=$time"_"$domainname".whois_out"
+  filename=$time"_"${domainname}".whois_out"
   
-  whoisresult=$(whois $domainname > $filename)
+  whoisresult=$(whois ${domainname} > ${filename})
     
-  results=$(egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri' $filename)
+  results=$(egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri|DOMAIN NOT FOUND' $filename)
   returncode=$?
   
   if [ $returncode -eq 0 ]; then
-    echo -e "${time}\t${green}Available${reset}\t${1}"
+    echo -e "${time}\t${green}Available${reset}\t${domainname}"
   else
-    echo -e "${time}\t${red}NOT Available${reset}\t${1}"
+    echo -e "${time}\t${red}NOT Available${reset}\t${domainname}"
   fi
 
-  shift 
+  sleep 0.1
  
 done
