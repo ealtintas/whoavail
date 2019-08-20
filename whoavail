@@ -2,11 +2,14 @@
 
 if [ "$#" == "0" ]; then 
   echo "Usage: whoavail domain1.com domain2.net
+       whoavail filename.lst
        whoavail abcdfg.{com,net,org}
        whoavail domain{1,2,3}.com
        whoavail {abcd,efgh,jklm}.{com,net,org}
        whoavail {a..z}domain.{com,net,org} | tee -a domainavail.lst
-       whoavail {a..z}{a..z}{a..z}.{com,net,org} | tee -a domainavail.lst"
+       whoavail {a..z}{a..z}{a..z}.{com,net,org} | tee -a domainavail.lst
+       
+If you give the first parameter the filename of a text file (filename.lst) containing a list of domainnames (one domain in a line) all the lines in this file will be processed as a domain name."
   exit 1
 fi 
 
