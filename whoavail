@@ -23,7 +23,7 @@ green=''
 red=''
 reset=''
 
-# if the first param is a file read the domainlist form that file otherwise process all the params
+# if the first param is a file read the domainlist from that file otherwise process all the params
 if test -f "$1"; then
   domainlist=$(cat $1)
 else
