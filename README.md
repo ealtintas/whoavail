@@ -2,7 +2,7 @@
 
 **Turkish:** Bash ile yazılmış bu betik, komut satırı arabirimini kullanarak çok sayıdaki alanadının kullanılabilirlik (whois) durumunu kolay bir şekilde sorgulamanızı sağlar. Kontrol edilecek alan adı listesini metin bazlı bir dosyadan okuyabilir ve whois çıktılarını dosya olarak kaydedebilir. Betiğin kendi çıktısını CSV olarak yakalamak için kabuk yönlendirmesini kullanabilirsiniz.
 
-## Descripton:
+## Description:
 
 This script may help you to query multiple domains availability status using command line interface.
 
