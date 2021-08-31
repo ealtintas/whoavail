@@ -12,7 +12,7 @@ If you give the first parameter the filename of a text file containing a list of
 
 You may also use a command like "tee -a filename.csv" with pipe to see the output on screen while capturing it into a file...
 
-May also capture the whois output in a text file, using the param --capture
+Captures the whois output in a text file named as DATE-TIME_domainname.whois_out.
 
 ## Usage samples:
 
