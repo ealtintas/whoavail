@@ -12,8 +12,6 @@ If you give the first parameter the filename of a text file containing a list of
 
 You may also use a command like "tee -a filename.csv" with pipe to see the output on screen while capturing it into a file...
 
-Captures the whois output in a text file named as DATE-TIME_domainname.whois_out.
-
 ## Features
 
 - Checks one or more domain names.
@@ -21,6 +19,7 @@ Captures the whois output in a text file named as DATE-TIME_domainname.whois_out
 - Saves WHOIS output to timestamped files.
 - Detects "available" messages in WHOIS output heuristically.
 - Sleeps between lookups to avoid rate-limiting.
+- Captures the whois output in a text file named as "DATE-TIME_domainname.whois_out".
 
 ---
 

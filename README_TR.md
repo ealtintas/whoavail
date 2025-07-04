@@ -13,6 +13,7 @@ WHOIS sorgusu yaparak alan adı uygunluğunu kontrol eden basit bir Bash betiği
 - WHOIS çıktısını zaman damgalı dosyalara kaydeder.
 - WHOIS çıktısındaki "uygun" mesajlarını sezgisel olarak tespit eder.
 - Rate-limit riskini azaltmak için sorgular arasında bekleme yapar.
+- Whois çıktısını "DATE-TIME_domainname.whois_out" şeklinde adlandırılmış bir metin dosyasına kaydeder.
 
 ---
 
