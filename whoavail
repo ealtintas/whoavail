@@ -1,52 +1,58 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [ "$#" == "0" ]; then 
-  echo "Usage: whoavail domain1.com domain2.net
+set -u
+
+if [ "$#" -eq 0 ]; then
+  cat <<EOF
+Usage: whoavail domain1.com domain2.net
        whoavail filename.lst
        whoavail abcdfg.{com,net,org}
        whoavail domain{1,2,3}.com
        whoavail {abcd,efgh,jklm}.{com,net,org}
        whoavail {a..z}domain.{com,net,org} | tee -a domainavail.lst
        whoavail {a..z}{a..z}{a..z}.{com,net,org} | tee -a domainavail.lst
-       
-If you give the first parameter the filename of a text file (filename.lst) containing a list of domainnames (one domain in a line) all the lines in this file will be processed as a domain name."
+
+If you give the first parameter as the filename of a text file (filename.lst)
+containing a list of domain names (one per line) all the lines in this file
+will be processed as a domain name in loop.
+EOF
   exit 1
-fi 
+fi
 
-#coloured text
-#green='\033[0;32m'
-#red='\033[0;31m'
-#reset='\033[0m'
-
-#plain text
+# Plain text / coloring 
+# coloured text
+# green='\033[0;32m'
+# red='\033[0;31m'
+# reset='\033[0m'
+# plain text (no colors)
 green=''
 red=''
 reset=''
 
-# if the first param is a file read the domainlist from that file otherwise process all the params
-if test -f "$1"; then
-  domainlist=$(cat $1)
-else
-  domainlist="$@"
-fi
-
-for domainname in $domainlist
-do
-
+process_domain() {
+  local domainname="$1"
+  local time
   time=$(date +%y%m%d-%H%M%S)
-  filename=$time"_"${domainname}".whois_out"
-  
-  whoisresult=$(whois ${domainname} > ${filename})
-    
-  results=$(egrep -q '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri|DOMAIN NOT FOUND' $filename)
-  returncode=$?
-  
-  if [ $returncode -eq 0 ]; then
-    echo -e "${time}\t${green}Available${reset}\t${domainname}"
+  local filename="${time}_${domainname}.whois_out"
+
+  whois "$domainname" > "$filename" 2>/dev/null
+
+  if grep -Eq '^No match|^NOT FOUND|^Not fo|AVAILABLE|^No Data Fou|has not been regi|No entri|DOMAIN NOT FOUND' "$filename"; then
+    printf "%s\t%sAvailable%s\t%s\n" "$time" "$green" "$reset" "$domainname"
   else
-    echo -e "${time}\t${red}NOT Available${reset}\t${domainname}"
+    printf "%s\t%sNOT Available%s\t%s\n" "$time" "$red" "$reset" "$domainname"
   fi
 
-  sleep 0.1
- 
-done
+  sleep 3
+}
+
+if [ -f "$1" ]; then
+  while IFS= read -r line || [ -n "$line" ]; do
+    [ -z "$line" ] && continue
+    process_domain "$line"
+  done < "$1"
+else
+  for domainname in "$@"; do
+    process_domain "$domainname"
+  done
+fi
