@@ -1,6 +1,6 @@
 # whoavail
 
-**Turkish:** Bash ile yazılmış bu betik, komut satırı arabirimini kullanarak çok sayıdaki alanadının kullanılabilirlik (whois) durumunu kolay bir şekilde sorgulamanızı sağlar. Kontrol edilecek alan adı listesini metin bazlı bir dosyadan okuyabilir ve whois çıktılarını dosya olarak kaydedebilir. Betiğin kendi çıktısını CSV olarak yakalamak için kabuk yönlendirmesini kullanabilirsiniz.
+A simple Bash script to check domain name availability using WHOIS.
 
 ## Description:
 
@@ -14,18 +14,53 @@ You may also use a command like "tee -a filename.csv" with pipe to see the outpu
 
 Captures the whois output in a text file named as DATE-TIME_domainname.whois_out.
 
-## Usage samples:
+## Features
+
+- Checks one or more domain names.
+- Supports reading domain lists from a text file.
+- Saves WHOIS output to timestamped files.
+- Detects "available" messages in WHOIS output heuristically.
+- Sleeps between lookups to avoid rate-limiting.
+
+---
+
+## Usage
+
+```bash
+whoavail domain1.com domain2.net
+whoavail filename.lst
+whoavail abcdfg.{com,net,org}
+whoavail domain{1,2,3}.com
+whoavail {abcd,efgh,jklm}.{com,net,org}
+whoavail {a..z}domain.{com,net,org} | tee -a domainavail.lst
+whoavail {a..z}{a..z}{a..z}.{com,net,org} | tee -a domainavail.lst
+````
+
+* If the **first parameter** is a text file (e.g. `filename.lst`), each line in the file is treated as a domain name and checked.
+
+---
+
+## Example
+
+```bash
+whoavail example.com
+```
+
+Example output:
 
 ```
-  whoavail filename.lst
-  whoavail domain1.com domain2.net
-  whoavail abcdfg.{com,net,org}
-  whoavail {abcd,efgh,jklm}.{com,net,org} >> filename.csv
-  whoavail {a..z}domain{0..9}.{com,net,org} | tee -a filename.csv
-  whoavail domain{a..z}.{com,net,org} | tee -a filename.csv
+240704-103015	Available	example.com
 ```
 
-## Thanks to
+## Requirements
 
-* https://github.com/mrkrstphr/whoaint
-* https://linuxconfig.org/check-domain-name-availability-with-bash-and-whois
+* Bash
+* whois command-line tool
+
+---
+
+## Notes
+
+* The script saves each WHOIS response in a timestamped file in the current directory.
+* WHOIS servers may rate-limit requests. The script waits 3 seconds between lookups.
+
